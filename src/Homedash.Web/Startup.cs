@@ -34,6 +34,7 @@ namespace Homedash.Web
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseMvc();
         }
