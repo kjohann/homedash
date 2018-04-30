@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Homedash.Web.Config;
+using Homedash.Web.DataGathering.Yr;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -23,6 +25,11 @@ namespace Homedash.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<HttpClientProvider>();
+            services.AddScoped<YrDataFetcher>();
+
+            services.Configure<YrConfig>(Configuration.GetSection("Yr"));
+
             services.AddMvc();
         }
 
