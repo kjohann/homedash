@@ -23,9 +23,6 @@ public class ForecastEntryModel
       PrecipitationInMillimeters = model.Precipitation.Value,
       WindSpeedInMetersPerSecond = model.WindSpeed.Mps,
       TemperaturesInCelcius = model.Temperature.Value
-      // PrecipitationInMillimeters = Convert.ToDecimal(model.Precipitation.Value),
-      // WindSpeedInMetersPerSecond = Convert.ToDecimal(model.WindSpeed.Mps),
-      // TemperaturesInCelcius = Convert.ToInt32(model.Temperature.Value)
     };
   }
 }

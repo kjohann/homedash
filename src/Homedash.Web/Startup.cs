@@ -29,6 +29,7 @@ namespace Homedash.Web
             services.AddScoped<YrDataFetcher>();
 
             services.Configure<YrConfig>(Configuration.GetSection("Yr"));
+            services.Configure<RuterConfig>(Configuration.GetSection("Ruter"));
 
             services.AddMvc();
         }
