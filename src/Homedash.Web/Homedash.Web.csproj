@@ -6,11 +6,10 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\" />
-    <Content Remove="wwwroot\node_modules\**\*" />
-    <Content Remove="wwwroot\.cache\**\*" />
-    <Content Remove="wwwroot\dist\**\*" />
-    <Content Remove="wwwroot\package.json" />
-    <Content Remove="wwwroot\package-lock.json" />
+    <Compile Remove="client\**" />
+    <Content Remove="client\**" />
+    <EmbeddedResource Remove="client\**" />
+    <None Remove="client\**" />
   </ItemGroup>
 
   <ItemGroup>

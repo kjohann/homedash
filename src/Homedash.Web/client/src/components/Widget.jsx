@@ -1,4 +1,4 @@
-import '~/styles/widget.less';
+import 'less/widget';
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
