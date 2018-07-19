@@ -25,6 +25,11 @@ const Widget = (WrappedComponent) => {
       this.poller = setInterval(this.fetchData, this.state.interval);
     }
 
+    componentDidCatch(error, info) {
+      this.setState({ error: true });
+      console.log(error, info); // eslint-disable-line no-console
+    }
+
     componentWillUnmount() {
       clearInterval(this.poller);
       this.poller = null;
@@ -60,11 +65,6 @@ const Widget = (WrappedComponent) => {
       }
 
       throw new Error('WrappedComponent lacks a fetchData() function for fetching data');
-    }
-
-    componentDidCatch(error, info) {
-      this.setState({ error: true });
-      console.log(error, info); // eslint-disable-line no-console
     }
 
     render() {

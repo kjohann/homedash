@@ -1,7 +1,6 @@
 
 const webpack = require('webpack');
 const path = require('path');
-const Config = require('webpack-config').default;
 const { environment } = require('webpack-config');
 const stylesConfig = require('./webpack.styles.config');
 const base = require('./webpack.base.config');
@@ -52,7 +51,7 @@ const config = {
   ],
   module: {
     rules: [
-      ...base.module.rules,    
+      ...base.module.rules,
       {
         test: /\.jsx?$/,
         include: [
