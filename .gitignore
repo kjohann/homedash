@@ -6,5 +6,6 @@ bin/
 dist/
 node_modules/
 publish
-wwwroot/
 *.csproj.user
+*-bundle.js
+*-bundle.js.map
