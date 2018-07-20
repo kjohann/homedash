@@ -6,6 +6,7 @@ bin/
 dist/
 node_modules/
 publish
+artifacts/
 *.csproj.user
 *-bundle.js
 *-bundle.js.map
