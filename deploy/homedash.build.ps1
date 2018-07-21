@@ -8,6 +8,14 @@ function EnsureLocation {
   Set-Location (Get-AbsolutePath $location)
 }
 
+function Get-Version {
+  $tags = git tag -l --points-at HEAD
+  if ($tags.GetType() -eq ("string".GetType())) {
+    return $tags
+  }
+  return $tags | Select-Object -Last 1
+}
+
 task Clean {
   Remove-Item (Get-AbsolutePath "artifacts") -Force -Recurse -ErrorAction SilentlyContinue
   EnsureLocation "../src/Homedash.web"
@@ -43,7 +51,8 @@ task Publish {
 
 task Zip {
   EnsureLocation "artifacts"
-  exec { Compress-Archive -Path "publish/*" -DestinationPath (Get-AbsolutePath "artifacts/app.zip")}
+  $zipName = Get-Version
+  exec { Compress-Archive -Path "publish/*" -DestinationPath (Get-AbsolutePath "artifacts/$zipName.zip")}
 }
 
 task BackEnd Restore, Build, Publish, Zip
