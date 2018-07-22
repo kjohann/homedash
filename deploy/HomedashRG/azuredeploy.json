@@ -8,6 +8,12 @@
         "description":  "SAS-uri to the blob containing the zip to be deployed"
       }
     },
+    "gitVersion": {
+      "type": "string",
+      "metadata": {
+        "description":  "The current git version or tag"
+      }
+    },
     "serverFarmName": {
       "type": "string",
       "defaultValue": "mydefaultSP"
@@ -59,7 +65,8 @@
             "displayName": "settings"
           },
           "properties": {
-            "WEBSITE_RUN_FROM_ZIP": "[parameters('zipUrl')]"
+            "WEBSITE_RUN_FROM_ZIP": "[parameters('zipUrl')]",
+            "GIT_VERSION": "[parameters('gitVersion')]"
           }
         }
       ]

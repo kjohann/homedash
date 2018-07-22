@@ -10,6 +10,7 @@ $ZipContainerName = "deploymentzips"
 Import-Module ./sharedFunctions.psm1 -Force
 
 $zipName = (Get-ChildItem .\artifacts | Where-Object { $_.Name -like '*.zip' }).Name
+$version = $zipName.Substring(0, $zipName.Length + 1 - $zipName.IndexOf('.zip'))
 $zipLocalPath = "./artifacts/$zipName"
 
 $storageAccount = Get-AzureRmStorageAccount -ResourceGroupName $ResourceGroupName
@@ -24,10 +25,9 @@ $blobUri = $blob.ICloudBlob.Uri.AbsoluteUri
 $now = Get-Date
 $sasToken = New-AzureStorageBlobSASToken -Context $storageAccount.Context -Container $container.Name -Blob $blob.Name -Permission 'r' -StartTime $now -ExpiryTime $now.AddYears(2)
 
-
 $zipUrl = "$($blobUri)$sasToken"
 
-$TemplateParametersObject = @{zipUrl = $zipUrl}
+$TemplateParametersObject = @{zipUrl = $zipUrl; gitVersion = $version;}
 
 if ($whatIf.IsPresent) {
   New-ResourceGroupValidation `
@@ -36,6 +36,9 @@ if ($whatIf.IsPresent) {
   -TemplateFile $TemplateFilePath `
   -TemplateParametersObject $TemplateParametersObject
 } else {
+  "Preparing deploy of $ResourceGroupName..."
+  Start-Sleep 5
+
   New-ResourceGroupDeployment `
   -ResourceGroupLocation $ResourceGroupLocation `
   -ResourceGroupName $ResourceGroupName `

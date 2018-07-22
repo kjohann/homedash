@@ -9,11 +9,13 @@ function EnsureLocation {
 }
 
 function Get-Version {
-  param ([switch]$hasBuilt)
-  if ($hasBuilt.IsPresent) {
-    $tags = git tag -l --points-at HEAD~1
-  }
   $tags = git tag -l --points-at HEAD
+  if ($null -eq $tags) {
+    Write-Warning "No version tag detected - falling back to commit hash"
+    Write-Warning "If you want to publish the same package several times, use version tags instead"
+    $hash = git rev-parse HEAD
+    return $hash.Substring(0, 7)
+  }
   if ($tags.GetType() -eq ("string".GetType())) {
     return $tags
   }
