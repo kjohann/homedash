@@ -9,7 +9,7 @@ $ZipContainerName = "deploymentzips"
 
 Import-Module ./sharedFunctions.psm1 -Force
 
-$version = Get-Version
+$version = Get-Version -hasBuilt
 $zipName = "$version.zip"
 $zipLocalPath = "./artifacts/$zipName"
 
