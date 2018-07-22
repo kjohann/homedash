@@ -5,4 +5,4 @@ if (!(Get-Module -ListAvailable -Name InvokeBuild)) {
 
 Import-Module InvokeBuild
 
-Invoke-Build
+Invoke-Build -File .\homedash.build.ps1
