@@ -1,0 +1,82 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "zipUrl": {
+      "type": "string",
+      "metadata": {
+        "description":  "SAS-uri to the blob containing the zip to be deployed"
+      }
+    },
+    "serverFarmName": {
+      "type": "string",
+      "defaultValue": "mydefaultSP"
+    },
+    "serverFarmResourceGroup": {
+      "type": "string",
+      "defaultValue": "AppServicePlansRG"
+    },
+    "homedashstorageType": {
+      "type": "string",
+      "defaultValue": "Standard_LRS",
+      "allowedValues": [
+        "Standard_LRS",
+        "Standard_ZRS",
+        "Standard_GRS",
+        "Standard_RAGRS",
+        "Premium_LRS"
+      ]
+    }
+  },
+  "variables": {
+    "homedashName": "kristianhomedash",
+    "homedashstorageName": "[concat('homedashstorage', substring(uniqueString(resourceGroup().id), 0, 7))]"
+  },
+  "resources": [
+    {
+      "name": "[variables('homedashName')]",
+      "type": "Microsoft.Web/sites",
+      "location": "westeurope",
+      "apiVersion": "2015-08-01",
+      "dependsOn": [ ],
+      "tags": {
+        "[concat('hidden-related:', resourceId(parameters('serverFarmResourceGroup'), 'Microsoft.Web/serverFarms', parameters('serverFarmName')))]": "Resource",
+        "displayName": "homedash"
+      },
+      "properties": {
+        "name": "[variables('homedashName')]",
+        "serverFarmId": "[resourceId(parameters('serverFarmResourceGroup'), 'Microsoft.Web/serverFarms', parameters('serverFarmName'))]"
+      },
+      "resources": [
+        {
+          "name": "appsettings",
+          "type": "config",
+          "apiVersion": "2015-08-01",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/sites', variables('homedashName'))]"
+          ],
+          "tags": {
+            "displayName": "settings"
+          },
+          "properties": {
+            "WEBSITE_RUN_FROM_ZIP": "[parameters('zipUrl')]"
+          }
+        }
+      ]
+    },
+    {
+      "name": "[variables('homedashstorageName')]",
+      "type": "Microsoft.Storage/storageAccounts",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2016-01-01",
+      "sku": {
+        "name": "[parameters('homedashstorageType')]"
+      },
+      "dependsOn": [ ],
+      "tags": {
+        "displayName": "homedashstorage"
+      },
+      "kind": "Storage"
+    }],
+  "outputs": {}
+}
