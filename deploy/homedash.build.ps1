@@ -1,5 +1,3 @@
-Import-Module ./sharedFunctions.psm1 -Force
-
 function Get-AbsolutePath {
   param([string]$relativePath)
   return (Join-Path $BuildRoot $relativePath)
@@ -10,6 +8,17 @@ function EnsureLocation {
   Set-Location (Get-AbsolutePath $location)
 }
 
+function Get-Version {
+  param ([switch]$hasBuilt)
+  if ($hasBuilt.IsPresent) {
+    $tags = git tag -l --points-at HEAD~1
+  }
+  $tags = git tag -l --points-at HEAD
+  if ($tags.GetType() -eq ("string".GetType())) {
+    return $tags
+  }
+  return $tags | Select-Object -Last 1
+}
 
 task Clean {
   Remove-Item (Get-AbsolutePath "artifacts") -Force -Recurse -ErrorAction SilentlyContinue

@@ -9,8 +9,7 @@ $ZipContainerName = "deploymentzips"
 
 Import-Module ./sharedFunctions.psm1 -Force
 
-$version = Get-Version -hasBuilt
-$zipName = "$version.zip"
+$zipName = (Get-ChildItem .\artifacts | Where-Object { $_.Name -like '*.zip' }).Name
 $zipLocalPath = "./artifacts/$zipName"
 
 $storageAccount = Get-AzureRmStorageAccount -ResourceGroupName $ResourceGroupName
@@ -23,10 +22,10 @@ $blob = Set-AzureStorageBlobContent -Container $container.Name -Blob $zipName -F
 $blobUri = $blob.ICloudBlob.Uri.AbsoluteUri
 
 $now = Get-Date
-$sasToken = New-AzureStorageBlobSASToken -Container $container.Name -Blob $blob.Name -Permission 'r' -StartTime $now -ExpiryTime $now.AddYears(2)
+$sasToken = New-AzureStorageBlobSASToken -Context $storageAccount.Context -Container $container.Name -Blob $blob.Name -Permission 'r' -StartTime $now -ExpiryTime $now.AddYears(2)
 
 
-$zipUrl = "$blobUri?$sasToken"
+$zipUrl = "$($blobUri)$sasToken"
 
 $TemplateParametersObject = @{zipUrl = $zipUrl}
 

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import format from 'date-fns/format';
 import fetchWrapper from 'utils/fetchWrapper';
 import HOC from 'components/Widget';
-import Icon from 'components/Icon';
 
 const ForecastItem = ({
   from,
@@ -58,8 +57,9 @@ class WeatherWidget extends React.Component {
           {this.getForecastItems()}
         </div>
         <div className="Weather-suninfo">
-          <span className="u--block"><Icon icon="arrow up" className="Icon--white" /> {format(data.sunRise, 'H:mm')}</span>
-          <span className="u--block"><Icon icon="arrow down" className="Icon--white" /> {format(data.sunDown, 'H:mm')}</span>
+          <span className="u--block">Sol opp: {format(data.sunRise, 'H:mm')}</span>
+          <br />
+          <span className="u--block">Sol ned: {format(data.sunDown, 'H:mm')}</span>
           <div className="u--bottom">
             <span className="u--block">© yr.no</span>
             <span className="u--block">({format(data.lastUpdated, 'H:mm')})</span>
