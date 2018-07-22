@@ -23,7 +23,7 @@ $blob = Set-AzureStorageBlobContent -Container $container.Name -Blob $zipName -F
 $blobUri = $blob.ICloudBlob.Uri.AbsoluteUri
 
 $now = Get-Date
-$sasToken = New-AzureStorageBlobSASToken -Context $storageAccount.Context -Container $container.Name -Blob $blob.Name -Permission 'r' -StartTime $now -ExpiryTime $now.AddYears(2)
+$sasToken = New-AzureStorageBlobSASToken -Context $storageAccount.Context -Container $container.Name -Blob $blob.Name -Permission 'r' -StartTime $now.AddDays(-1) -ExpiryTime $now.AddYears(2)
 
 $zipUrl = "$($blobUri)$sasToken"
 
