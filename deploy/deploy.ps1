@@ -1,3 +1,7 @@
+param(
+  [switch]$whatIf
+)
+
 function Format-ValidationOutput {
   param ($ValidationOutput, [int] $Depth = 0)
   Set-StrictMode -Off
@@ -72,9 +76,9 @@ $ResourceGroupName = "HomedashRG"
 $TemplateFilePath = ".\HomedashRG\azuredeploy.json"
 $ZipContainerName = "deploymentzips"
 
-$zipName = (Get-ChildItem ..\artifacts | Where-Object { $_.Name -like '*.zip' }).Name
+$zipName = (Get-ChildItem "$($PSScriptRoot)/../artifacts" | Where-Object { $_.Name -like '*.zip' }).Name
 $version = $zipName.Substring(0, $zipName.Length + 1 - $zipName.IndexOf('.zip'))
-$zipLocalPath = "../artifacts/$zipName"
+$zipLocalPath = "$($PSScriptRoot)/../artifacts/$zipName"
 
 $storageAccount = Get-AzureRmStorageAccount -ResourceGroupName $ResourceGroupName
 $container = Get-AzureStorageContainer -Name $ZipContainerName -Context $storageAccount.Context -ErrorAction SilentlyContinue
