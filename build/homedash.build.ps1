@@ -23,7 +23,7 @@ function Get-Version {
 }
 
 task Clean {
-  Remove-Item (Get-AbsolutePath "artifacts") -Force -Recurse -ErrorAction SilentlyContinue
+  Remove-Item (Get-AbsolutePath "../artifacts") -Force -Recurse -ErrorAction SilentlyContinue
   EnsureLocation "../src/Homedash.web"
   exec { dotnet clean -c Release }
 }
@@ -52,13 +52,13 @@ task Build {
 
 task Publish {
   EnsureLocation "../src/Homedash.web"
-  exec { dotnet publish --no-restore --no-build -c Release -o (Get-AbsolutePath "artifacts/publish") }
+  exec { dotnet publish --no-restore --no-build -c Release -o (Get-AbsolutePath "../artifacts/publish") }
 }
 
 task Zip {
-  EnsureLocation "artifacts"
+  EnsureLocation "../artifacts"
   $zipName = Get-Version
-  exec { Compress-Archive -Path "publish/*" -DestinationPath (Get-AbsolutePath "artifacts/$zipName.zip")}
+  exec { Compress-Archive -Path "publish/*" -DestinationPath (Get-AbsolutePath "../artifacts/$zipName.zip")}
 }
 
 task BackEnd Restore, Build, Publish, Zip
